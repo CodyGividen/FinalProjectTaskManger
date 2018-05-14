@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FinalProjectTaskManger</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_creation__date">Creation Date: %1$s</string>
+    <string name="task_due_date">Due Date: %1$s</string>
+    <string name="task_details">%1$s</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="task_completed_date">Completed: %1$s</string>
+</resources>
