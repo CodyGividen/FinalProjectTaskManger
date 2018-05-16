@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -90,7 +91,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 //change background to red
                 rowLayout.setBackgroundResource(R.color.green);
                 //calculate check back in date
-                int numberOfDays = 0;
+                final int numberOfDays = 0;
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(taskDefault.getTaskCompletedDate());
                 calendar.add(Calendar.DAY_OF_YEAR, numberOfDays);
@@ -122,6 +123,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 }
             };
         }
+        public View.OnTouchListener onEdit(final TaskDefault taskDefault){
+            return new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    adapterCallback.onEdit(taskDefault);
+                    return true;
+                }
+            };
+        }
     }
 
     public interface AdapterCallback {
@@ -130,5 +140,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         void rowClicked(TaskDefault taskDefault);
 
         void rowLongClicked(TaskDefault taskDefault);
+
+        void onEdit(TaskDefault taskDefault);
     }
 }
