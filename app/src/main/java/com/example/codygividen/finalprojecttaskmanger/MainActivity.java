@@ -3,6 +3,7 @@ package com.example.codygividen.finalprojecttaskmanger;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 //Cody gividen
 
-public class MainActivity extends AppCompatActivity implements TaskAdapter.AdapterCallback, AddTaskFragment.ActivityCallback, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener{
+public class MainActivity extends AppCompatActivity implements TaskAdapter.AdapterCallback, AddTaskFragment.ActivityCallback, EditTaskFragment.ActivityCallback2{
+//    GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener
     @BindView(R.id.task_recycler_view)
     protected RecyclerView recyclerView;
 
@@ -25,8 +27,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
     private TaskDatabase taskDatabase;
     private AddTaskFragment addTaskFragment;
     private LinearLayoutManager linearLayoutManager;
+    private EditTaskFragment editTaskFragment;
     private GestureDetectorCompat gestureDetector;
     private TaskDefault taskToEdit;
+    public static final String TASK_EDIT = "task_edit";
 
     @Override
     protected void onStart() {
@@ -41,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         taskDatabase = ((TaskApplication) getApplicationContext()).getDatabase();
-        this.gestureDetector = new GestureDetectorCompat(this,this);
-        gestureDetector.setOnDoubleTapListener(this);
+//        this.gestureDetector = new GestureDetectorCompat(this,this);
+//        gestureDetector.setOnDoubleTapListener(this);
         setUpRecyclerView();
         }
     private void setUpRecyclerView() {
@@ -74,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
     @Override
     public void rowClicked(TaskDefault taskDefault) {
         if (taskDefault.isCompleted()) {
-            markAsNotCompleted(taskDefault);
-        } else {
             markAsCompleted(taskDefault);
+        } else {
+            markAsNotCompleted(taskDefault);
         }
     }
 
@@ -103,23 +107,23 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
 
     @Override
     public void rowLongClicked(final TaskDefault taskDefault) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Delete Task?").setMessage("Are you sure you would like to delete this task?").setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                taskDatabase.taskDao().deleteTaskDefault(taskDefault);
-//
-//                taskAdapter.updateList(taskDatabase.taskDao().getTaskDefault());
-//
-//                Toast.makeText(MainActivity.this, "Task has been deleted!", Toast.LENGTH_LONG).show();
-//            }
-//        }).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        }).setIcon(android.R.drawable.ic_dialog_alert).show();
+      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Option").setMessage("Select one option!").setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(TASK_EDIT, (Parcelable) taskDefault);
+                editTaskFragment.setArguments(bundle);
+                editTaskFragment = EditTaskFragment.newInstance();
+                editTaskFragment.attachParentEdit(MainActivity.this);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, editTaskFragment).commit();
+            }
+        }).setPositiveButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 
     @Override
@@ -147,57 +151,57 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
             }
         }).setIcon(android.R.drawable.ic_dialog_alert).show();
     }
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        this.gestureDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        onSwipe();
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event){
+//        this.gestureDetector.onTouchEvent(event);
+//        return super.onTouchEvent(event);6
+//    }
+//
+//    @Override
+//    public boolean onSingleTapConfirmed(MotionEvent e) {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onDoubleTap(MotionEvent e) {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onDoubleTapEvent(MotionEvent e) {
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onDown(MotionEvent e) {
+//        return true;
+//    }
+//
+//    @Override
+//    public void onShowPress(MotionEvent e) {
+//
+//    }
+//
+//    @Override
+//    public boolean onSingleTapUp(MotionEvent e) {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+//        return true;
+//    }
+//
+//    @Override
+//    public void onLongPress(MotionEvent e) {
+//
+//    }
+//
+//    @Override
+//    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//        return true;
+//    }
 
 //
 //        private static final int SWIPE_THRESHOLD = 100;
@@ -239,25 +243,23 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
 //        }
 
 
-        public void onSwipe() {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Delete Task?").setMessage("Are you sure you would like to delete this task?").setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    taskDatabase.taskDao().deleteTaskDefault(taskToEdit);
-
-                    taskAdapter.updateList(taskDatabase.taskDao().getTaskDefault());
-
-                    Toast.makeText(MainActivity.this, "Task has been deleted!", Toast.LENGTH_LONG).show();
-                }
-            }).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            }).setIcon(android.R.drawable.ic_dialog_alert).show();
-        }
-
-
+//        public void onSwipe() {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//            builder.setTitle("Delete Task?").setMessage("Are you sure you would like to delete this task?").setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//
+//                    taskDatabase.taskDao().deleteTaskDefault(taskToEdit);
+//
+//                    taskAdapter.updateList(taskDatabase.taskDao().getTaskDefault());
+//
+//                    Toast.makeText(MainActivity.this, "Task has been deleted!", Toast.LENGTH_LONG).show();
+//                }
+//            }).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            }).setIcon(android.R.drawable.ic_dialog_alert).show();
+//        }
 }
