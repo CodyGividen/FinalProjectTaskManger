@@ -13,6 +13,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -111,12 +113,18 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
         builder.setTitle("Select Option").setMessage("Select one option!").setNegativeButton("Edit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(TASK_EDIT, (Parcelable) taskDefault);
-                editTaskFragment.setArguments(bundle);
-                editTaskFragment = EditTaskFragment.newInstance();
-                editTaskFragment.attachParentEdit(MainActivity.this);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, editTaskFragment).commit();
+                if(taskDefault.isCompleted()) {
+                    Toast.makeText(MainActivity.this, "You can not edit a completed task!", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }else {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(TASK_EDIT, taskDefault);
+                    editTaskFragment = new EditTaskFragment();
+                    editTaskFragment.setArguments(bundle);
+                    editTaskFragment = EditTaskFragment.newInstance();
+                    editTaskFragment.attachParentEdit(MainActivity.this);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, editTaskFragment).commit();
+                }
             }
         }).setPositiveButton("Close", new DialogInterface.OnClickListener() {
             @Override
@@ -150,6 +158,11 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
                 dialog.dismiss();
             }
         }).setIcon(android.R.drawable.ic_dialog_alert).show();
+    }
+
+    @Override
+    public void editClicked() {
+        taskAdapter.updateList(taskDatabase.taskDao().getTaskDefault());
     }
 //    @Override
 //    public boolean onTouchEvent(MotionEvent event){
@@ -243,23 +256,23 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Adapt
 //        }
 
 
-//        public void onSwipe() {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//            builder.setTitle("Delete Task?").setMessage("Are you sure you would like to delete this task?").setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                    taskDatabase.taskDao().deleteTaskDefault(taskToEdit);
-//
-//                    taskAdapter.updateList(taskDatabase.taskDao().getTaskDefault());
-//
-//                    Toast.makeText(MainActivity.this, "Task has been deleted!", Toast.LENGTH_LONG).show();
-//                }
-//            }).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                }
-//            }).setIcon(android.R.drawable.ic_dialog_alert).show();
-//        }
+        public void onSwipe() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Delete Task?").setMessage("Are you sure you would like to delete this task?").setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    taskDatabase.taskDao().deleteTaskDefault(taskToEdit);
+
+                    taskAdapter.updateList(taskDatabase.taskDao().getTaskDefault());
+
+                    Toast.makeText(MainActivity.this, "Task has been deleted!", Toast.LENGTH_LONG).show();
+                }
+            }).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).setIcon(android.R.drawable.ic_dialog_alert).show();
+        }
 }

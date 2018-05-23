@@ -7,4 +7,8 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="task_completed_date">Completed: %1$s</string>
+    <string name="edit_title">Title: %1$s</string>
+    <string name="creation_date_edit">Creation Date: %1$s</string>
+    <string name="details_edit">Details: %1$s</string>
+    <string name="due_date_edit">Due Date: %1$s</string>
 </resources>

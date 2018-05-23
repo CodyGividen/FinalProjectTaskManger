@@ -30,14 +30,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/edit_title">
 
-        <TextView
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/item_title_text_view_edit_1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Title: %1$s" />
+            />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -50,14 +51,15 @@
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_edit_4">
+        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_edit_4"
+        android:hint="@string/creation_date_edit">
 
-        <TextView
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/item_creation_date_text_view_edit_2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Creation Date: %1$s" />
+             />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -70,14 +72,15 @@
         android:layout_marginTop="32dp"
         app:layout_constraintBottom_toTopOf="@+id/text_input_layout_edit_4"
         app:layout_constraintTop_toBottomOf="@+id/text_input_layout_edit_1"
-        tools:layout_editor_absoluteX="8dp">
+        tools:layout_editor_absoluteX="8dp"
+        android:hint="@string/details_edit">
 
-        <TextView
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/item_details_text_view_edit_3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Details: %1$s" />
+            />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -91,14 +94,15 @@
         app:layout_constraintBottom_toTopOf="@+id/text_input_layout_edit_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_edit_3">
+        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_edit_3"
+        android:hint="@string/due_date_edit">
 
-        <TextView
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/item_due_date_text_view_edit_4"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Due Date: %1$s" />
+            />
     </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>

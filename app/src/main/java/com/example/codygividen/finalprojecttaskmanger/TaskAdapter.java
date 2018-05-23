@@ -91,10 +91,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 //change background to red
                 rowLayout.setBackgroundResource(R.color.green);
                 //calculate check back in date
-                final int numberOfDays = 0;
+//                final int numberOfDays = 0;
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(taskDefault.getTaskCompletedDate());
-                calendar.add(Calendar.DAY_OF_YEAR, numberOfDays);
+                calendar.add(Calendar.DAY_OF_YEAR,0);
                 Date date = calendar.getTime();
                 SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
                 itemCompletedDate.setText(adapterCallback.getContext().getString(R.string.task_completed_date, formatter.format(date)));

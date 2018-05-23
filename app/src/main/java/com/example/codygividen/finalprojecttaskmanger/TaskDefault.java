@@ -2,11 +2,13 @@ package com.example.codygividen.finalprojecttaskmanger;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 
 @Entity
-public class TaskDefault {
+public class TaskDefault implements Parcelable{
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -23,6 +25,27 @@ public class TaskDefault {
         this.taskDueDate = taskDueDate;
         this.taskCreatedDate = taskCreatedDate;
     }
+
+    protected TaskDefault(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        detailsOfTask = in.readString();
+        taskCreatedDate = in.readString();
+        taskDueDate = in.readString();
+        isCompleted = in.readByte() != 0;
+    }
+
+    public static final Creator<TaskDefault> CREATOR = new Creator<TaskDefault>() {
+        @Override
+        public TaskDefault createFromParcel(Parcel in) {
+            return new TaskDefault(in);
+        }
+
+        @Override
+        public TaskDefault[] newArray(int size) {
+            return new TaskDefault[size];
+        }
+    };
 
     public String getTaskDueDate() {
         return taskDueDate;
@@ -79,5 +102,21 @@ public class TaskDefault {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(detailsOfTask);
+        dest.writeString(taskDueDate);
+        dest.writeString(taskCreatedDate);
+        dest.writeValue(isCompleted);
+//        dest.writeByte((Byte)(isCompleted ? 1 : 0));
+
     }
 }
